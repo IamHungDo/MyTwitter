@@ -25,13 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "UserDidLogout") , object: nil, queue: OperationQueue.main) { (Notification) in
-            if User.currentUser != nil {
-                print("there is a current user")
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateInitialViewController()
                 
                 self.window?.rootViewController = vc
-        }
+        
         }
         
         return true

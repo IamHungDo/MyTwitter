@@ -9,19 +9,19 @@
 import UIKit
 
 class User: NSObject {
-    var name: NSString?
-    var screenName: NSString?
+    var name: String?
+    var screenName: String?
     var profileURL: NSURL?
-    var tagline: NSString?
+    var tagline: String?
     
     var dictionary: NSDictionary?
     
     init(dictionary: NSDictionary) {
         self.dictionary = dictionary
         
-        name = dictionary["name"] as! String as NSString?
-        screenName = dictionary["screen_name"] as! String as NSString?
-        tagline = dictionary["description"] as! String as NSString?
+        name = dictionary["name"] as? String
+        screenName = dictionary["screen_name"] as? String
+        tagline = dictionary["description"] as? String
         
         let profileUrlString = dictionary["profile_image_url_https"] as! String as NSString?
         if let profileUrlString = profileUrlString {
@@ -39,9 +39,9 @@ class User: NSObject {
             if _currentUser == nil
             {
                 let defaults = UserDefaults.standard
-                if let userData = defaults.object(forKey: "currentUserData") as? Data
+                if let userData = defaults.object(forKey: "currentUserData") as? NSData
                 {
-                    let dictionary = try! JSONSerialization.jsonObject(with: userData, options: [])
+                    let dictionary = try! JSONSerialization.jsonObject(with: userData as Data, options: [])
                     _currentUser = User(dictionary: dictionary as! NSDictionary)
                 }
                 
@@ -59,10 +59,9 @@ class User: NSObject {
              let data = try! JSONSerialization.data(withJSONObject: user.dictionary!, options: [])
                 defaults.set(data, forKey: "currentUserData")
             } else {
-                defaults.set(nil, forKey: "currentUserData")
+                defaults.removeObject(forKey: "currentUserData")
             }
             
-            defaults.set(user, forKey: "currentUser")
             defaults.synchronize()
             
         }

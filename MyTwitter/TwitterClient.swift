@@ -76,7 +76,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         fetchAccessToken(withPath: "oauth/access_token", method: "POST", requestToken: requestToken, success: { (accessToken: BDBOAuth1Credential?) in
             
             self.currentAccount(success: { (user: User) -> () in
-//                User.currentUser = user
+                User.currentUser = user
                 self.loginSuccess?()
             }, failure: { (error: NSError) -> () in
                 self.loginFailure?(error)
