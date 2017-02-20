@@ -24,7 +24,14 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         super.viewDidLoad()
         
+        //Nav Bar
         navigationController?.navigationBar.barTintColor = UIColor.init(red: 0.00/255.0, green: 172.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        
+        let logo = UIImage(named: "twitterlogo")
+        navigationItem.titleView = UIImageView(image: logo)
+        
+        
+        
 
         
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) in

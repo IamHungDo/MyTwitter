@@ -10,6 +10,14 @@ import UIKit
 
 class TweetCell: UITableViewCell {
 
+    @IBAction func favButton(_ sender: Any) {
+        
+    }
+    @IBAction func retweetButton(_ sender: Any) {
+        
+    }
+    @IBOutlet weak var retweetCount: UILabel!
+    @IBOutlet weak var favCount: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var screenNameLabel: UILabel!
@@ -23,6 +31,12 @@ class TweetCell: UITableViewCell {
             profilePic.setImageWith(tweetsInCell.profileURL as URL)
             screenNameLabel.text = "@\(tweetsInCell.screenName!)"
             timeStampLabel.text = "· \(tweetsInCell.timeStampString!)"
+            
+            let retweetStr = String(tweetsInCell.retweetCount)
+            retweetCount.text = retweetStr
+            let favStr = String(tweetsInCell.favoritesCount)
+            favCount.text = favStr
+
         }
     }
     
@@ -30,6 +44,8 @@ class TweetCell: UITableViewCell {
         super.awakeFromNib()
         profilePic.layer.cornerRadius = 5
         profilePic.clipsToBounds = true
+        
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
