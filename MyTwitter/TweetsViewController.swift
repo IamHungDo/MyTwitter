@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
 
     @IBAction func onLogoutButton(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
@@ -16,6 +16,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
 
     var tweets: [Tweet]!
+    var isMoreDataLoading = false
+    var loadingMoreView:InfiniteScrollActivityView?
+    var id: Int!
     
     
     override func viewDidLoad() {
@@ -30,13 +33,28 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         let logo = UIImage(named: "twitterlogo")
         navigationItem.titleView = UIImageView(image: logo)
         
+        //Refresh function
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(TweetsViewController.refreshControlAction(refreshControl:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        
+        //Set up infinite scroll
+        
+        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        tableView.addSubview(loadingMoreView!)
+        
+        var insets = tableView.contentInset;
+        insets.bottom += InfiniteScrollActivityView.defaultHeight;
+        tableView.contentInset = insets
         
         
 
-        
+        //Home timeline
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) in
             self.tweets = tweets
-            
+
             for tweet in tweets {
                 print(tweet.text!)
             }
@@ -68,6 +86,54 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         cell.tweetsInCell = tweets[indexPath.row]
         return cell
     }
+    
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        
+        tableView.reloadData()
+        refreshControl.endRefreshing()
+    }
+    
+    //View Did Scroll
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !isMoreDataLoading {
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+                
+                isMoreDataLoading = true
+
+                let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+                self.id = self.tweets[self.tweets.count - 1].id!
+
+                loadMoreData()
+            }
+        }
+        
+    }
+    
+    func loadMoreData() {
+
+        TwitterClient.sharedInstance?.loadMoreTweets(id: id, success: { (tweets: [Tweet]) in
+            
+            for tweet in tweets {
+                self.tweets?.append(tweet)
+
+            }
+            self.loadingMoreView!.stopAnimating()
+            self.isMoreDataLoading = false
+            self.tableView.reloadData()
+            
+        }, failure: {
+            
+            (error: Error) in
+            
+            print(error)
+        })
+    }
+
 
     /*
     // MARK: - Navigation

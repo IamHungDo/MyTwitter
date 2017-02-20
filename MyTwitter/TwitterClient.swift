@@ -14,19 +14,9 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     static let sharedInstance = TwitterClient(baseURL: NSURL(string: "https://api.twitter.com") as URL!, consumerKey: "7L0jVECeb0NSQwM2tDSLkexov", consumerSecret: "LeGBmYzZ2pC2QAiRpyZ9exvgHknkrb6gnPZLsdGCyZidvBb3xd")
     
-    func homeTimeline(success: @escaping ([Tweet]) -> (), failure: @escaping (NSError) ->()) {
-        get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
-            
-            let dictionaries = response as! [NSDictionary]
-            let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
-            
-            success(tweets)
-            
-        }, failure: { (task: URLSessionDataTask?, error: Error) in
-            failure(error as NSError)
-        })
-    }
+
     
+    //Current account
     func currentAccount(success: @escaping (User) -> (), failure: @escaping (NSError) -> ()) {
         get("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
             let userDictionary = response as? NSDictionary
@@ -45,6 +35,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         
     }
     
+    //Login
     var loginSuccess: (() ->())?
     var loginFailure: ((NSError) ->())?
     
@@ -70,7 +61,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: User.userDidLogoutNotification) , object: nil)
     }
-    
+    //HandleOpenUrl
     func handleOpenUrl(url: NSURL) {
         let requestToken = BDBOAuth1Credential(queryString: url.query)
         fetchAccessToken(withPath: "oauth/access_token", method: "POST", requestToken: requestToken, success: { (accessToken: BDBOAuth1Credential?) in
@@ -87,6 +78,34 @@ class TwitterClient: BDBOAuth1SessionManager {
         }, failure: { (error) in
             print("error: \(error?.localizedDescription)")
             self.loginFailure?(error as! NSError)
+        })
+    }
+    
+    
+    //Hometimeline
+    func homeTimeline(success: @escaping ([Tweet]) -> (), failure: @escaping (NSError) ->()) {
+        get("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            
+            let dictionaries = response as! [NSDictionary]
+            let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
+            
+            success(tweets)
+            
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error as NSError)
+        })
+    }
+    
+    func loadMoreTweets(id: Int, success: @escaping ([Tweet])-> (), failure: @escaping (NSError) -> ()){
+        get("1.1/statuses/home_timeline.json?max_id=\(id)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
+            
+            let dictionaries  = response as! [NSDictionary]
+            let tweets = Tweet.tweetsWithArray(dictionaries: dictionaries)
+            
+            success(tweets)
+            
+        }, failure: { (task: URLSessionDataTask?, error: Error) in
+            failure(error as NSError)
         })
     }
     
