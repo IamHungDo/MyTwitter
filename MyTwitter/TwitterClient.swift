@@ -96,6 +96,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     
+    //Load more tweets
     func loadMoreTweets(id: Int, success: @escaping ([Tweet])-> (), failure: @escaping (NSError) -> ()){
         get("1.1/statuses/home_timeline.json?max_id=\(id)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask, response: Any?) in
             
@@ -108,6 +109,8 @@ class TwitterClient: BDBOAuth1SessionManager {
             failure(error as NSError)
         })
     }
+    
+    //Retweet
     func retweetFunction(id: Int, success: @escaping ([Tweet])-> (), failure: @escaping (NSError) -> ()) {
         
         post("1.1/statuses/retweet/\(id).json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask!, response: Any?) -> Void in
@@ -117,6 +120,37 @@ class TwitterClient: BDBOAuth1SessionManager {
             print("I failed retweeting")
         }
     }
+    //Favorite
+    func favFuction(id: Int, success: @escaping ([Tweet])-> (), failure: @escaping (NSError) -> ()) {
+        
+        post("1.1/favorites/create.json?id=\(id)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask!, response: Any?) -> Void in
+            print("sucess favoriting")
+        }) { (task: URLSessionDataTask?, error: Error!) in
+            print(error.localizedDescription)
+            print("I failed favoriting")
+        }
+    }
     
+    //Detweet
+    func unRetweetFunction(id: Int, success: @escaping ([Tweet])-> (), failure: @escaping (NSError) -> ()) {
+        
+        post("1.1/statuses/unretweet/\(id).json", parameters: nil, progress: nil, success: { (task: URLSessionDataTask!, response: Any?) -> Void in
+            print("success unretweet")
+        }) { (task: URLSessionDataTask?, error: Error!) in
+            print(error.localizedDescription)
+            print("I failed unretweet")
+        }
+    }
+    
+    //Defavorite
+    func deFavFuction(id: Int, success: @escaping ([Tweet])-> (), failure: @escaping (NSError) -> ()) {
+        
+        post("/1.1/favorites/destroy.json?id=\(id)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask!, response: Any?) -> Void in
+            print("success defavoriting")
+        }) { (task: URLSessionDataTask?, error: Error!) in
+            print(error.localizedDescription)
+            print("I failed defavoriting")
+        }
+    }
 
 }

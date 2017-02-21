@@ -21,10 +21,6 @@ class Tweet: NSObject {
     var profileURL: NSURL!
     var id: Int?
 
-    
-    
-    
-    
     init(dictionary: NSDictionary) {
         user = User(dictionary: dictionary["user"] as! NSDictionary)
         userName = user?.name

@@ -20,6 +20,9 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var retweetOutlet: UIButton!
     @IBOutlet weak var favOutlet: UIButton!
     
+    var retweetFlag = false
+    var favFlag = false
+    
     var tweetsInCell: Tweet! {
         didSet {
             descriptionLabel.text = tweetsInCell.text
@@ -40,7 +43,7 @@ class TweetCell: UITableViewCell {
     }
     
     @IBAction func retweetButton(_ sender: Any) {
-        
+        if retweetFlag == false {
         retweetOutlet.setImage(UIImage(named:"retweet-icon-green"), for: UIControlState.normal)
         
         TwitterClient.sharedInstance?.retweetFunction(id: tweetsInCell.id!, success: { (tweets:[Tweet]) in
@@ -49,11 +52,50 @@ class TweetCell: UITableViewCell {
             print("fail")
         })
         
+        retweetCount.text = String(tweetsInCell.retweetCount + 1)
+        retweetFlag = true
+            
+        } else {
+        retweetOutlet.setImage(UIImage(named:"retweet-icon"), for: UIControlState.normal)
+            
+            TwitterClient.sharedInstance?.unRetweetFunction(id: tweetsInCell.id!, success: { (tweets:[Tweet]) in
+                print("success")
+            }, failure: { (error: NSError) in
+                print("fail")
+            })
+            retweetCount.text = String(tweetsInCell.retweetCount)
+            retweetFlag = false
+            
+        }
+        
         
     }
     
     @IBAction func favButton(_ sender: Any) {
+        if favFlag == false {
         favOutlet.setImage(UIImage(named:"favor-icon-red"), for: UIControlState.normal)
+        
+        TwitterClient.sharedInstance?.favFuction(id: tweetsInCell.id!, success: { (tweets:[Tweet]) in
+            print("success")
+        }, failure: { (error: NSError) in
+            print("fail")
+        })
+            favCount.text = String(tweetsInCell.favoritesCount + 1)
+            favFlag = true
+            
+        } else {
+            favOutlet.setImage(UIImage(named:"favor-icon"), for: UIControlState.normal)
+            
+            TwitterClient.sharedInstance?.deFavFuction(id: tweetsInCell.id!, success: { (tweets:[Tweet]) in
+                print("success")
+            }, failure: { (error: NSError) in
+                print("fail")
+            })
+            
+            favCount.text = String(tweetsInCell.favoritesCount)
+            favFlag = false
+        }
+        
     }
 
     
