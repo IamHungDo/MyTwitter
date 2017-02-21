@@ -10,12 +10,6 @@ import UIKit
 
 class TweetCell: UITableViewCell {
 
-    @IBAction func favButton(_ sender: Any) {
-        
-    }
-    @IBAction func retweetButton(_ sender: Any) {
-        
-    }
     @IBOutlet weak var retweetCount: UILabel!
     @IBOutlet weak var favCount: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -23,6 +17,8 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var screenNameLabel: UILabel!
     @IBOutlet weak var timeStampLabel: UILabel!
     @IBOutlet weak var profilePic: UIImageView!
+    @IBOutlet weak var retweetOutlet: UIButton!
+    @IBOutlet weak var favOutlet: UIButton!
     
     var tweetsInCell: Tweet! {
         didSet {
@@ -36,9 +32,30 @@ class TweetCell: UITableViewCell {
             retweetCount.text = retweetStr
             let favStr = String(tweetsInCell.favoritesCount)
             favCount.text = favStr
+            
+            retweetOutlet.setImage(UIImage(named:"retweet-icon"), for: UIControlState.normal)
+            favOutlet.setImage(UIImage(named: "favor-icon"), for: UIControlState.normal)
 
         }
     }
+    
+    @IBAction func retweetButton(_ sender: Any) {
+        
+        retweetOutlet.setImage(UIImage(named:"retweet-icon-green"), for: UIControlState.normal)
+        
+        TwitterClient.sharedInstance?.retweetFunction(id: tweetsInCell.id!, success: { (tweets:[Tweet]) in
+            print("success")
+        }, failure: { (error: NSError) in
+            print("fail")
+        })
+        
+        
+    }
+    
+    @IBAction func favButton(_ sender: Any) {
+        favOutlet.setImage(UIImage(named:"favor-icon-red"), for: UIControlState.normal)
+    }
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

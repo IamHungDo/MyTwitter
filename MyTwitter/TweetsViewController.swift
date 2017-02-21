@@ -84,6 +84,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
         cell.tweetsInCell = tweets[indexPath.row]
+        cell.selectionStyle = .none
+
         return cell
     }
     
