@@ -26,6 +26,7 @@ class DetailTweetViewController: UIViewController {
     }
 
     @IBAction func favButton(_ sender: Any) {
+        
     }
     @IBAction func retweetButton(_ sender: Any) {
     }
@@ -33,7 +34,7 @@ class DetailTweetViewController: UIViewController {
         super.viewDidLoad()
         
     userNameLabel.text = tweets.userName
-    screenNameLabel.text = tweets.screenName
+    screenNameLabel.text = "@\(tweets.screenName!)"
     descriptionLabel.text = tweets.text
     timeStampLabel.text = tweets.timeStampString
     profilePic.setImageWith(tweets.profileURL as URL)
