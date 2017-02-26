@@ -104,7 +104,8 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
         //Profile Pic recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: Selector(("profileImageTapped:")))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped(sender:)))
+        
         cell.profilePic.tag = indexPath.row
         cell.profilePic.addGestureRecognizer(tapGesture)
         cell.profilePic.isUserInteractionEnabled = true
