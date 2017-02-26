@@ -10,12 +10,16 @@ import UIKit
 
 class ComposeViewController: UIViewController, UITextViewDelegate {
     
+
+    @IBOutlet weak var onCancel: UIBarButtonItem!
     @IBOutlet weak var tweetOutlet: UIButton!
 
     @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var tweetText: UITextView!
     
     var tweets: Tweet!
+    var reply: Bool?
+
     var editTextField = UITapGestureRecognizer()
     var endEdit = UITapGestureRecognizer()
     
@@ -25,6 +29,11 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         TwitterClient.sharedInstance?.postTweetFunction(statusText: tweetStatus!)
         dismiss(animated: true, completion: nil)
         
+    
+    }
+    
+    @IBAction func exitTweet(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -32,10 +41,16 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
         
         tweetText.delegate = self
         
+        //Reply
+        
+
+        
         
         
         //NavBar
         navigationController?.navigationBar.barTintColor = UIColor.init(red: 0.00/255.0, green: 172.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.white
         
         //Button
         tweetOutlet.layer.cornerRadius = 7; // this value vary as per your desire

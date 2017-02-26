@@ -77,8 +77,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="4FT-bJ-CIP"/>
+                    <navigationItem key="navigationItem" id="4FT-bJ-CIP">
+                        <barButtonItem key="rightBarButtonItem" title="X" id="cft-Rm-x2s">
+                            <connections>
+                                <action selector="exitTweet:" destination="Wvr-7Q-G6d" id="9H9-1Q-MgQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="onCancel" destination="cft-Rm-x2s" id="rIn-5g-5QO"/>
                         <outlet property="tweetOutlet" destination="Tgg-Kb-mfo" id="pCD-7F-LP9"/>
                         <outlet property="tweetText" destination="wK3-aQ-huD" id="MnV-qs-XBy"/>
                     </connections>
@@ -434,7 +441,6 @@
         <!--Navigation Controller-->
         <scene sceneID="7Uz-sf-RcG">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h1e-og-OQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r8b-Mn-G2w" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iLM-KM-7hp">
@@ -446,6 +452,7 @@
                         <segue destination="Wvr-7Q-G6d" kind="relationship" relationship="rootViewController" id="H4U-M0-sHm"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h1e-og-OQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1657" y="-620"/>
         </scene>

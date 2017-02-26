@@ -162,5 +162,7 @@ class TwitterClient: BDBOAuth1SessionManager {
             print("fail post")
         }
     }
+    
+    
 
 }

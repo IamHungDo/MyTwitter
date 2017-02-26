@@ -18,9 +18,13 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
         self.present(nextViewController, animated:true, completion:nil)
     }
+    
+    
     @IBAction func onLogoutButton(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
     }
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     var tweets: [Tweet]!
