@@ -9,12 +9,20 @@
 import UIKit
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
-
+    
+    @IBAction func composeButton(_ sender: Any) {
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "Compose") as! ComposeViewController
+        
+        self.present(nextViewController, animated:true, completion:nil)
+    }
     @IBAction func onLogoutButton(_ sender: Any) {
         TwitterClient.sharedInstance?.logout()
     }
     @IBOutlet weak var tableView: UITableView!
-
+    
     var tweets: [Tweet]!
     var isMoreDataLoading = false
     var loadingMoreView:InfiniteScrollActivityView?
@@ -50,22 +58,22 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.contentInset = insets
         
         
-
+        
         //Home timeline
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) in
             self.tweets = tweets
-
+            
             for tweet in tweets {
                 print(tweet.text!)
             }
             self.tableView.reloadData()
-
+            
             
         }, failure: { (error: NSError) in
             print(error.localizedDescription)
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -74,7 +82,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if self.tweets != nil {
-        return self.tweets.count
+            return self.tweets.count
         } else {
             return 0
         }
@@ -85,7 +93,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         
         cell.tweetsInCell = tweets[indexPath.row]
         cell.selectionStyle = .none
-
+        
         return cell
     }
     
@@ -103,13 +111,13 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
                 
                 isMoreDataLoading = true
-
+                
                 let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
                 loadingMoreView?.frame = frame
                 loadingMoreView!.startAnimating()
                 
                 self.id = self.tweets[self.tweets.count - 1].id!
-
+                
                 loadMoreData()
             }
         }
@@ -117,12 +125,12 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func loadMoreData() {
-
+        
         TwitterClient.sharedInstance?.loadMoreTweets(id: id, success: { (tweets: [Tweet]) in
             
             for tweet in tweets {
                 self.tweets?.append(tweet)
-
+                
             }
             self.loadingMoreView!.stopAnimating()
             self.isMoreDataLoading = false
@@ -135,17 +143,24 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             print(error)
         })
     }
-
-
-
+    
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let cell = sender as! UITableViewCell
-        let indexPath = tableView.indexPath(for: cell)
-        let tweetsData = tweets[(indexPath?.row)!]
+        if (segue.identifier == "tweetToDetail") {
+            
+            let cell = sender as! UITableViewCell
+            let indexPath = tableView.indexPath(for: cell)
+            let tweetsData = tweets[(indexPath?.row)!]
+            
+            let detailViewController = segue.destination as! DetailTweetViewController
+            
+            detailViewController.tweets = tweetsData
+            
+        }
         
-        let detailViewController = segue.destination as! DetailTweetViewController
         
-        detailViewController.tweets = tweetsData
+        
     }
-
+    
 }

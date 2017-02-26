@@ -152,5 +152,15 @@ class TwitterClient: BDBOAuth1SessionManager {
             print("I failed defavoriting")
         }
     }
+    
+    func postTweetFunction(statusText: String) {
+        
+        post("1.1/statuses/update.json?status=\(statusText)", parameters: nil, progress: nil, success: { (task: URLSessionDataTask!, response: Any?) -> Void in
+            print("success post")
+        }) { (task: URLSessionDataTask?, error: Error!) in
+            print(error.localizedDescription)
+            print("fail post")
+        }
+    }
 
 }
