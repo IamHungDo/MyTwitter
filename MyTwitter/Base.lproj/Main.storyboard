@@ -119,10 +119,14 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="o80-Ij-wbn">
                                                     <rect key="frame" x="8" y="12" width="49" height="46"/>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="49" id="ZMZ-nx-Qjm"/>
                                                         <constraint firstAttribute="height" constant="46" id="mFZ-TA-bTC"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="sbc-Kw-VH4" appends="YES" id="4yZ-CJ-cU2"/>
+                                                    </connections>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tos-rA-TbB">
                                                     <rect key="frame" x="65" y="26" width="294" height="16"/>
@@ -258,8 +262,31 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qs2-Nw-Nj0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="sbc-Kw-VH4">
+                    <connections>
+                        <segue destination="Wo0-nq-Mg7" kind="show" identifier="tweetToProfile" id="Qui-2n-DDx"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1656.8" y="89.505247376311857"/>
+        </scene>
+        <!--Profile View Controller-->
+        <scene sceneID="YHj-yr-MQg">
+            <objects>
+                <viewController id="Wo0-nq-Mg7" customClass="ProfileViewController" customModule="MyTwitter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tNW-4w-fcJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="M4P-Pz-2qv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ViO-KR-wbz">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9P9-q3-OTb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1374" y="859"/>
         </scene>
         <!--Tweet-->
         <scene sceneID="blC-0h-tUI">

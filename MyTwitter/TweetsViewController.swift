@@ -10,6 +10,13 @@ import UIKit
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     
+    @IBOutlet weak var profileOutlet: UIButton!
+    
+    @IBAction func profileButton(_ sender: Any) {
+    }
+    
+    
+
     @IBAction func composeButton(_ sender: Any) {
         
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
@@ -27,6 +34,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBOutlet weak var tableView: UITableView!
     
+    var imageSelected: UIImageView?
     var tweets: [Tweet]!
     var isMoreDataLoading = false
     var loadingMoreView:InfiniteScrollActivityView?
@@ -38,6 +46,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         super.viewDidLoad()
+        
         
         //Nav Bar
         navigationController?.navigationBar.barTintColor = UIColor.init(red: 0.00/255.0, green: 172.0/255.0, blue: 237.0/255.0, alpha: 1.0)
@@ -60,7 +69,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         var insets = tableView.contentInset;
         insets.bottom += InfiniteScrollActivityView.defaultHeight;
         tableView.contentInset = insets
-        
         
         
         //Home timeline
@@ -95,10 +103,21 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
+        //Profile Pic recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: Selector(("profileImageTapped:")))
+        cell.profilePic.tag = indexPath.row
+        cell.profilePic.addGestureRecognizer(tapGesture)
+        cell.profilePic.isUserInteractionEnabled = true
+        
         cell.tweetsInCell = tweets[indexPath.row]
         cell.selectionStyle = .none
         
         return cell
+    }
+    
+    func profileImageTapped(sender: UIGestureRecognizer) {
+        imageSelected = sender.view as? UIImageView
+        self.performSegue(withIdentifier: "tweetToProfile", sender: nil)
     }
     
     func refreshControlAction(refreshControl: UIRefreshControl) {
@@ -163,6 +182,13 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             
         }
         
+        
+        if segue.identifier == "tweetToProfile" {
+            
+            let tweet = tweets![(imageSelected?.tag)!]
+            let profileViewController = segue.destination as! ProfileViewController
+            profileViewController.user = tweet.user
+        }
         
         
     }
