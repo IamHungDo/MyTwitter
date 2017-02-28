@@ -281,12 +281,28 @@
                     <view key="view" contentMode="scaleToFill" id="ViO-KR-wbz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ocd-h3-s3Q">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Title" id="jt8-py-qCv"/>
+                                </items>
+                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AE5-ja-z4q">
+                                <rect key="frame" x="0.0" y="44" width="375" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="bannerView" destination="AE5-ja-z4q" id="bCZ-Im-z26"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9P9-q3-OTb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1374" y="859"/>
+            <point key="canvasLocation" x="1373.5999999999999" y="858.62068965517244"/>
         </scene>
         <!--Tweet-->
         <scene sceneID="blC-0h-tUI">
@@ -361,10 +377,6 @@
                                 <rect key="frame" x="46" y="310" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button" image="reply-icon"/>
-                                <connections>
-                                    <action selector="favButton:" destination="qhK-Bd-aj4" eventType="touchUpInside" id="7aD-gE-gTt"/>
-                                    <action selector="replyButton:" destination="qhK-Bd-aj4" eventType="touchUpInside" id="ChL-2w-Hkg"/>
-                                </connections>
                             </button>
                             <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bed-W2-IJl" userLabel="first line">
                                 <rect key="frame" x="17" y="298" width="343" height="1"/>

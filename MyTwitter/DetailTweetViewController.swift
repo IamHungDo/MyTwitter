@@ -31,6 +31,9 @@ class DetailTweetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    self.navigationController?.navigationBar.tintColor = .white
+
+        
     userNameLabel.text = tweets.userName
     screenNameLabel.text = "@\(tweets.screenName!)"
     descriptionLabel.text = tweets.text
