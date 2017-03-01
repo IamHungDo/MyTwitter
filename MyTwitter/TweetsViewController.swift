@@ -187,8 +187,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         if segue.identifier == "tweetToProfile" {
             
             let tweet = tweets![(imageSelected?.tag)!]
+
             let profileViewController = segue.destination as! ProfileViewController
             profileViewController.user = tweet.user
+            profileViewController.tweets = tweet
         }
         
         

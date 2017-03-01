@@ -14,6 +14,10 @@ class User: NSObject {
     var profileURL: NSURL?
     var tagline: String?
     var profileBanner: NSURL?
+    var tweetCount: Int
+    var followCount: Int
+    var followerCount: Int
+    
     
     var dictionary: NSDictionary?
     
@@ -23,6 +27,9 @@ class User: NSObject {
         name = dictionary["name"] as? String
         screenName = dictionary["screen_name"] as? String
         tagline = dictionary["description"] as? String
+        tweetCount = dictionary["statuses_count"] as! Int
+        followCount = dictionary["followers_count"] as! Int
+        followerCount = dictionary["friends_count"] as! Int
         
         let profileBannerString = dictionary["profile_banner_url"] as? String as NSString?
         if let profileBannerString = profileBannerString {

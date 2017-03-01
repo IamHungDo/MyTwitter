@@ -44,8 +44,10 @@ class DetailTweetViewController: UIViewController {
         retweetCount.text = retweetStr
     let favStr = String(tweets.favoritesCount)
         favCount.text = favStr
-    
-
+        
+        
+    profilePic.layer.cornerRadius = 5
+    profilePic.clipsToBounds = true
     }
     
     

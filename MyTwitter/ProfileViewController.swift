@@ -9,7 +9,13 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-    
+    @IBOutlet weak var followersCount: UILabel!
+    @IBOutlet weak var taglineLabel: UILabel!
+    @IBOutlet weak var followingCount: UILabel!
+    @IBOutlet weak var tweetCount: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var screenNameLabel: UILabel!
+    @IBOutlet weak var profilePic: UIImageView!
     @IBOutlet weak var bannerView: UIImageView!
 
     var user: User!
@@ -26,11 +32,31 @@ class ProfileViewController: UIViewController {
         
         self.navigationController?.navigationBar.tintColor = .white
         
+        //Data
+        
+        
+        userNameLabel.text = tweets.userName
+        screenNameLabel.text = "@\(tweets.screenName!)"
+        taglineLabel.text = user.tagline
+        profilePic.setImageWith(tweets.profileURL as URL)
+        
+        let followerStr = String(user.followerCount)
+        followersCount.text = followerStr
+        
+        let followingStr = String(user.followCount)
+        followingCount.text = followingStr
+        
+        let tweetsCount = String(user.tweetCount)
+        tweetCount.text = tweetsCount
+        
         if user.profileBanner != nil {
         bannerView.setImageWith(user.profileBanner as! URL)
         } else {
             
         }
+        
+        profilePic.layer.cornerRadius = 5
+        profilePic.clipsToBounds = true
     }
 
     override func didReceiveMemoryWarning() {
